@@ -37,7 +37,7 @@ export default function user(state=initialState, action){
 				...state,
 				isLoggedIn: false,
 				user: {},
-				status: null
+				status: 'error'
 			}
 
 		default: 

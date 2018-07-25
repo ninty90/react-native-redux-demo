@@ -1,10 +1,5 @@
 'use strict';
 import React from 'react';
-import { Navigator } from 'react-native';
-
-
-// Pages
-
 import LoginPage from '../pages/login';
 import MainPage from '../pages/main';
 

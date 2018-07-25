@@ -31,9 +31,11 @@ var styles = StyleSheet.create({
       height: 330,
       borderRadius: 20,
     },
-    comCulture: {
+
+    companyCulture: {
       width:320,
       marginTop:50,
+      minHeight: 50,
     },
 
     logoImg: {
