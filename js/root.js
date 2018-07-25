@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Navigator } from 'react-native';
+import { Navigator } from 'react-native-deprecated-custom-components';
 import { connect } from 'react-redux';
 import Router from './configs/router';
 import { skipLogin, asyncSkipLogin } from './actions/user';

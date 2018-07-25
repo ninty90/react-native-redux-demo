@@ -26,6 +26,7 @@ export function logIn(opt){
 			.then((res)=>{
 				dispatch({'type': TYPES.LOGGED_IN, user: testUser});
 			}).catch((e)=>{
+				console.log(e);
 				AlertIOS.alert(e.message);
 				dispatch({'type': TYPES.LOGGED_ERROR, error: e});
 			});

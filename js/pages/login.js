@@ -5,6 +5,7 @@ import {
   View,
   Platform,
   TextInput,
+  ImageBackground,
   Image,
   AlertIOS,
 } from 'react-native';
@@ -27,6 +28,7 @@ class LoginPage extends Component{
             username: 'sup1',
             password: '123456',
             btnFlag: true,
+            modalVisible: false,
         };
         this.onChangeName = this.onChangeName.bind(this);
         this.onChangePswd = this.onChangePswd.bind(this);
@@ -34,26 +36,25 @@ class LoginPage extends Component{
         this.handleRegister = this.handleRegister.bind(this);
     }
 
-    shouldComponentUpdate(nextProps, nextState){
-
+    componentWillReceiveProps (nextProps) {
+        console.log(nextProps.status);
         if(nextProps.isLoggedIn != this.props.isLoggedIn && nextProps.isLoggedIn === true){
             //will redirect
-            
-            this.refs.modal.close();
+            this.setState({
+                modalVisible: false
+            })
             this.toMain();
-            return false;
-        }
-        if(nextProps.status == 'doing'){
-            //loggining
-            this.refs.modal.open();
-            return false;
+            return;
         }
         if(nextProps.status == 'error' || nextProps.status == 'done'){
-            this.refs.modal.close();
-            return false;
+            console.log('error modal close');
+            this.setState({
+                modalVisible: false
+            })
+            // this.refs.modal.close();
+            return;
         }
 
-        return true;
     }
 
     toMain(){
@@ -62,7 +63,8 @@ class LoginPage extends Component{
     }
 
     handleLogin(){
-        if(!this.state.username || !this.state.password){
+        const { username, password } = this.state;
+        if (!username || !password) {
             AlertIOS.alert(
                  'username, password?'
             );
@@ -72,6 +74,9 @@ class LoginPage extends Component{
             'name': this.state.username,
             'password': this.state.password,
         };
+        this.setState({
+            modalVisible: true
+        })
         this.props.dispatch(logIn(opt));
     }
 
@@ -90,77 +95,89 @@ class LoginPage extends Component{
 
 
     render(){
+        const { username, password, modalVisible } = this.state;
         return (
-          <View style={[commonStyle.wrapper, loginStyle.loginWrap]}>
-            <Image source={require('../imgs/icons/bg.png')} style={{resizeMode: 'stretch'}}>
-                <View style={loginStyle.loginMain}>
-                    <View style={loginStyle.loginMainCon}>
-                        <View style={loginStyle.comCulture}>
-                            <Text style={[commonStyle.textCenter,{color:'#ccc'}]}>Welcome</Text>
-                            <Text style={[commonStyle.textCenter,{color:'#ccc'}]}>You are the best.</Text>
-                        </View>
-                        <View style={loginStyle.formStyle}>
-                            <View style={[loginStyle.formInput,loginStyle.formInputSplit]}>
-                                <Image source={require('../imgs/icons/user.png')} style={{width:25,height:25,resizeMode: 'contain'}}/>
-                                <TextInput 
-                                    ref="login_name" 
-                                    placeholder='username' 
-                                    style={loginStyle.loginInput} 
-                                    onChangeText={this.onChangeName} />
+            <View style={[commonStyle.wrapper, loginStyle.loginWrap]}>
+                <ImageBackground
+                    source={require('../imgs/icons/bg.png')}
+                    style={{ resizeMode: 'stretch', flex: 1 }}
+                >
+                    <View style={loginStyle.loginMain}>
+                        <View style={loginStyle.loginMainCon}>
+                            <View style={loginStyle.companyCulture}>
+                                <Text style={[commonStyle.textCenter,{color:'#cccccc'}]}>Follow Your Interests</Text>
+                                <Text style={[commonStyle.textCenter,{color:'#cccccc'}]}>Discover Your World</Text>
                             </View>
-                            <View style={loginStyle.formInput}>
-                                <Image source={require('../imgs/icons/passicon.png')} style={{width:25,height:25,resizeMode: 'contain'}}/>
-                                <TextInput 
-                                    ref="login_psw"  
-                                    style={loginStyle.loginInput} 
-                                    secureTextEntry={true}
-                                    placeholder='password' 
-                                    onChangeText={this.onChangePswd} />
-                            </View>
-                            <View style={{alignItems: 'flex-end'}}>
-                                <View style={loginStyle.forget}>
-                                <View>
-                                    <Image source={require('../imgs/icons/prompt.png')} style={{width:15,height:15,resizeMode: 'contain',marginRight:10}}/>
+                            <View style={loginStyle.formStyle}>
+                                <View style={[loginStyle.formInput,loginStyle.formInputSplit]}>
+                                    <Image
+                                        source={require('../imgs/icons/user.png')}
+                                        style={{ width:25, height:25, resizeMode: 'contain'}}
+                                    />
+                                    <TextInput 
+                                        ref="login_name" 
+                                        placeholder='username' 
+                                        style={loginStyle.loginInput} 
+                                        onChangeText={this.onChangeName}
+                                        value={username}
+                                    />
                                 </View>
-                                <View >
-                                    <Text style={{color:'#62a2e0', backgroundColor: 'white'}}>forget password?</Text>
+                                <View style={loginStyle.formInput}>
+                                    <Image source={require('../imgs/icons/passicon.png')} style={{width:25,height:25,resizeMode: 'contain'}}/>
+                                    <TextInput 
+                                        ref="login_psw"  
+                                        style={loginStyle.loginInput} 
+                                        secureTextEntry={true}
+                                        placeholder='password' 
+                                        value={password}
+                                        onChangeText={this.onChangePswd} />
                                 </View>
+                                <View style={{alignItems: 'flex-end'}}>
+                                    <View style={loginStyle.forget}>
+                                    <View>
+                                        <Image source={require('../imgs/icons/prompt.png')} style={{width:15,height:15,resizeMode: 'contain',marginRight:10}}/>
+                                    </View>
+                                    <View >
+                                        <Text style={{color:'#62a2e0', backgroundColor: 'white'}}>forget password?</Text>
+                                    </View>
+                                    </View>
+                                </View>
+                            </View>
+                            <View style={loginStyle.btn}>
+                                <View style={loginStyle.btnWrap}>
+                                    <Text style={loginStyle.loginBtn1} onPress={this.handleLogin}>Log in</Text>
+                                </View>
+                                <View style={loginStyle.btnWrap}>
+                                    <Text style={loginStyle.loginBtn2} onPress={this.handleRegister}>Skip</Text>
                                 </View>
                             </View>
                         </View>
-                        <View style={loginStyle.btn}>
-                            <View style={loginStyle.btnWrap}>
-                                <Text style={loginStyle.loginBtn1} onPress={this.handleLogin}>Log in</Text>
-                            </View>
-                            <View style={loginStyle.btnWrap}>
-                                <Text style={loginStyle.loginBtn2} onPress={this.handleRegister}>Skip</Text>
-                            </View>
-                        </View>
+                        
+                        
                     </View>
-                    
-                    
-                </View>
-            </Image>
+                </ImageBackground>
 
-           <ModalBox style={[commonStyle.modal,commonStyle.justAlign]} 
-                    ref={"modal"} backdropPressToClose={false} 
-                     animationDuration={10}
-                     backdrop={true}
-                     backdropOpacity={0}
-                     >
-                <Spinner style={commonStyle.spinner} 
-                    isVisible={true} 
-                    size={50} type="Arc" color="#FFFFFF"/>
-            </ModalBox>
+               <ModalBox style={[commonStyle.modal, commonStyle.justAlign]} 
+                    isOpen={modalVisible}
+                    backdropPressToClose={false} 
+                    animationDuration={10}
+                    backdrop={true}
+                    backdropOpacity={0}
+                >
+                    <Spinner style={commonStyle.spinner} 
+                        isVisible={true} 
+                        size={50} type="Arc" color="#FFFFFF"
+                    />
+                </ModalBox>
 
-          </View>
+            </View>
         );
     }
 }
 
 
 
-function select(store){
+function mapState2Props(store){
     return {
         isLoggedIn: store.userStore.isLoggedIn,
         user: store.userStore.user,
@@ -169,6 +186,6 @@ function select(store){
 }
 
 
-export default connect(select)(LoginPage);
+export default connect(mapState2Props)(LoginPage);
 
 
