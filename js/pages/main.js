@@ -56,19 +56,18 @@ class Main extends Component {
   }
 
   render() {
-    let {user} = this.props;
+    let { user } = this.props;
     return (
       <View style={[commonStyles.main, commonStyles.wrapper]}>
-      {this._renderNavBar()}
-      <View style={styles.container}>
+        {this._renderNavBar()}
+        <View style={styles.container}>
       
-        <Text>name: {user.name}</Text>
-        <Text>age: {user.age}</Text>
+          <Text>name: {user.name}</Text>
+          <Text>age: {user.age}</Text>
         
+        </View>
       </View>
-      </View>
-      );
-
+    );
   }
 
 
