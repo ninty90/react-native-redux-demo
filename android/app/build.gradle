@@ -95,7 +95,6 @@ def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         applicationId "com.redux"
@@ -134,6 +133,7 @@ android {
             }
         }
     }
+    buildToolsVersion '27.0.3'
 }
 
 dependencies {
