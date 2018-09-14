@@ -5,6 +5,9 @@ This is a react-native demo using redux to manage app states.
 ## Support
 - iOS
 
+## Articles
+- [在react-native中使用redux](https://www.jianshu.com/p/2c43860b0532)
+
 ## Installation
     
     git clone https://github.com/ninty90/react-native-redux-demo.git
